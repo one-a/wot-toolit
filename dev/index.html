@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1">
+    <title>WoT Beginners Toolkit</title>
+    <script src="css-devices/devices/i2c.js" defer></script>
+    <script src="css-devices/devices/PortManager.js" defer></script>
+    <script src="css-devices/devices/Utility.js" defer></script>
+    <script src="css-devices/devices/PCA9685.js" defer></script>
+    <script src="css-devices/devices/MCP3425.js" defer></script>
+    <script src="css-devices/CSSDeviceManager.js" defer></script>
+    <script src="css-devices/MultiColorLED.js" defer></script>
+    <script src="css-devices/Servo.js" defer></script>
+    <script src="css-devices/ADC.js" defer></script>
+    <script src="app.js" defer></script>
+    <style>
+      body {
+        padding-top: 0.3em;
+        padding-left: 1.8em;
+        font-size: 300px;
+      }
+      #led {
+        color: red;
+      }
+      #servo {
+        transform: rotate(0deg); /* 0 to 180 */
+        display: inline-block;
+      }
+      #slider {
+        width: 500px;
+        position: absolute;
+        top: 100px;
+        left: 650px;
+      }
+    </style>
+  </head>
+  <body>
+    <!--
+    <input id="slider" type="range" min="0" max="180">
+    -->
+   
+    <div id="led" data-css-device="type:multi-color-led; port-type:i2c; port-number:0; address:0x40; pwm-pin:0,1,2; min-pulse:0; max-pulse:0.006;">LED</div>
+    <div id="servo" data-css-device="type:servo; port-type:i2c; port-number:0; address:0x40; pwm-pin:3; min-pulse:0.0005; max-pulse:0.0024; angle-range:180;">SERVO<BR><span id="angl"></span></div>
+    
+      <!--ADC: <input id="adc" data-css-device="type:adc; port-type:i2c; port-number:0; address:0x68;"></input>
+--> 
+
+     <script src="jquery-1.11.3.min.js"></script>
+    <script>
+      //var servo = document.getElementById('servo');
+      var servo = $('#servo');
+      var num = 0;
+      var direction = 'up';
+      setInterval(function(){
+        if(direction == 'up'){
+          num+=180;
+        } else {
+          num-=180;
+        }
+        if(num > 180) {
+          direction == 'down';
+        }
+        servo.css('transform', 'rotate('+ num +'deg)');
+      }, 1000);
+      
+    </script>
+ 
+</body>
+</html>

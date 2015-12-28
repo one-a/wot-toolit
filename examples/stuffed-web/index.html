@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1">
+    <title>Stuffed Web - WoT Beginners Toolkit Sample</title>
+    <style>
+      body {
+        padding-left: 50px;
+      }
+      #control {
+        padding: 2em;
+        font-size: 80px;
+      }
+      .servo {
+        transform: rotate(0deg);
+      }
+      button {
+        font-size: 50px;
+      }
+      #current-tweet-user-icon {
+        width: 100px;
+        height: 100px;
+        
+      }
+      #current-tweet-user-name {
+        display: inline-block;
+      }
+      #current-tweet {
+        font-size: 80px;
+        padding-left: 10px;
+        background-repeat: repeat;
+      }
+    </style>
+    <script src="js/oauth.js" defer></script>
+    <script src="js/sha1.js" defer></script>
+    <script src="js/config.js" defer></script>
+    <script src="js/css-devices.js" defer></script>
+    <script src="js/app.js" defer></script>
+  </head>
+  <body>
+    <div id="current-tweet">
+      <img id="current-tweet-user-icon"/>
+      <div id="current-tweet-user-name"></div>
+      <div id="current-tweet-content"></div>
+    </div>
+    <div id="control">
+      <div id="right-hand" class="servo" data-css-device="type:servo; port-type:i2c; port-number:0; address:0x40; pwm-pin:0; min-pulse:0.0005; max-pulse:0.0024; angle-range:180;">RIGHT Hand</div>
+      <div id="left-hand" class="servo" data-css-device="type:servo; port-type:i2c; port-number:0; address:0x40; pwm-pin:1; min-pulse:0.0005; max-pulse:0.0024; angle-range:180;">LEFT Hand</div>
+      <div id="neck" class="servo" data-css-device="type:servo; port-type:i2c; port-number:0; address:0x40; pwm-pin:2; min-pulse:0.0005; max-pulse:0.0024; angle-range:180;">NECK</div>
+      <button id="glad">:)</button>
+      <button id="sad">:(</button>
+      <button id="agree">;)</button>
+      <button id="angry">&#x3E;:)</button>
+      <div id="status">STATUS</div>
+    </div>
+  </body>
+</html>

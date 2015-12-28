@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1">
+    <title>Calendar Based Lamp - WoT Beginners Toolkit Sample</title>
+    <style>
+      body {
+        padding-top: 1em;
+        font-size: 300px;
+        background-color: gray;
+      }
+      #led {
+        color: yellow;
+        text-align: center;
+      }
+    </style>
+    <script src="js/css-devices.js" defer></script>
+    <script src="js/app.js" defer></script>
+  </head>
+  <body>
+    <div id="led" data-css-device="type:multi-color-led; port-type:i2c; port-number:0; address:0x40; pwm-pin:0,1,2; min-pulse:0; max-pulse:0.006;">LED</div>
+  </body>
+</html>

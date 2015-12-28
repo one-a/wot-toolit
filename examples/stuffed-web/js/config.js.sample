@@ -1,0 +1,6 @@
+var config = {
+  consumer_key: "XXXXXXX",
+  consumer_secret: "XXXXXXX",
+  access_token: "XXXXXXX",
+  token_secret: "XXXXXXX"
+}
