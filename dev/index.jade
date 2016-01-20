@@ -1,129 +1,156 @@
 doctype html
-head
-  meta(name='viewport', content='width=device-width,user-scalable=no,initial-scale=1')
-  title WoT Beginners Toolkit
-  script(src='css-devices/devices/i2c.js', defer='')
-  script(src='css-devices/devices/PortManager.js', defer='')
-  script(src='css-devices/devices/Utility.js', defer='')
-  script(src='css-devices/devices/PCA9685.js', defer='')
-  script(src='css-devices/devices/MCP3425.js', defer='')
-  script(src='css-devices/CSSDeviceManager.js', defer='')
-  script(src='css-devices/MultiColorLED.js', defer='')
-  script(src='css-devices/Servo.js', defer='')
-  script(src='css-devices/ADC.js', defer='')
-  script(src='app.js', defer='')
-  style.
-    body {
-    padding-top: 0.3em;
-    padding-left: 1.8em;
-    font-size: 12px;
-    }
-    #led {
-    color: red;
-    }
-    #servo {
-    transform: rotate(0deg); /* 0 to 180 */
-    display: inline-block;
-    }
-    #slider {
-    width: 500px;
-    position: absolute;
-    top: 100px;
-    left: 650px;
-    }
-//
-  <input id="slider" type="range" min="0" max="180">
-#led(data-css-device='type:multi-color-led; port-type:i2c; port-number:0; address:0x40; pwm-pin:0,1,2; min-pulse:0; max-pulse:0.006;') LED
-#servo(data-css-device='type:servo; port-type:i2c; port-number:0; address:0x40; pwm-pin:3; min-pulse:0.0005; max-pulse:0.0024; angle-range:180;')
-  | SERVO
-  br
-  span#angl
-//
-  ADC: <input id="adc" data-css-device="type:adc; port-type:i2c; port-number:0; address:0x68;"></input>
-script(src='jquery-1.11.3.min.js')
-script.
-  //var servo = document.getElementById('servo');
-  var servo = $('#servo');
-  var num = 0;
-  var direction = 'up';
-  setInterval(function(){
-  if(direction == 'up'){
-  num+=180;
-  } else {
-  num-=180;
-  }
-  if(num > 180) {
-  direction == 'down';
-  }
-  servo.css('transform', 'rotate('+ num +'deg)');
-  }, 1000);
+html
+  head
+    meta(charset='utf-8')
+    meta(name='viewport', content='width=device-width,user-scalable=no,initial-scale=1')
+    title WoT Beginners Toolkit
+    script(src='css-devices/devices/i2c.js', defer='')
+    script(src='css-devices/devices/PortManager.js', defer='')
+    script(src='css-devices/devices/Utility.js', defer='')
+    script(src='css-devices/devices/PCA9685.js', defer='')
+    script(src='css-devices/devices/MCP3425.js', defer='')
+    script(src='css-devices/CSSDeviceManager.js', defer='')
+    script(src='css-devices/MultiColorLED.js', defer='')
+    script(src='css-devices/Servo.js', defer='')
+    script(src='css-devices/ADC.js', defer='')
+    script(src='app.js', defer='')
+      
 
-  ///////////////////.DS_Store
-  onload = function() {
-  draw();
-  };
-  function draw() {
-  var canvas = document.getElementById('c1');
-  if ( ! canvas || ! canvas.getContext ) {
-    return false;
-  }
-  var ctx = canvas.getContext('2d');
-  ctx.beginPath();
-  /* グラデーション領域をセット */
-  var grad  = ctx.createLinearGradient(0,0, 140,140);
-  /* グラデーション終点のオフセットと色をセット */
-  grad.addColorStop(0,'rgb(192, 80, 77)');    // 赤
-  grad.addColorStop(0.5,'rgb(155, 187, 89)'); // 緑
-  grad.addColorStop(1,'rgb(128, 100, 162)');  // 紫
-  /* グラデーションをfillStyleプロパティにセット */
-  ctx.fillStyle = grad;
-  /* 矩形を描画 */
-  ctx.rect(0,0, 140,140);
-  ctx.fill();
-  }
-  function img2canvas(){
-  var img1 = document.getElementById('img1');
-  var img = new Image();
-  img.src = img1.src;
-  var canvas = document.getElementById('c1');
-  if (canvas.getContext) {
-  var context = canvas.getContext('2d');
-  context.drawImage(img, 0, 0);
-  context.save();
-  }
-  }
-  function canvas2img(){
-  var img2 = document.getElementById('img2');
-  try {
-  var canvas = document.getElementById('c1');
-  var img_png_src = canvas.toDataURL();
-  img2.src = img_png_src;
-  document.getEleme
-  }catch(e){
-  console.log(e.toString());
-  }
-  }
-  function canvas2base64(){
-  var b64area = document.getElementById('txtarea');
-  var canvas = document.getElementById('c1');
-  //b64area.innerText = canvas.toDataURL('image/png').replace(new RegExp('^data\\:[^\\;]*\\;base64\\,'), '');
-  b64area.innerText = canvas.toDataURL('image/png');
-  }
 
-body
-  p
-    img(id="img1" src="icon.png")
-  p
-    button(onclick="img2canvas();") img2canvas
-  p
-    canvas#c1
-  p
-    button(onclick="canvas2img();") img2canvas
-    button(onclick="canvas2base64();") img2canvas
-  p
-    img(id="img2" src="icon.png")
-  p
-    form(action="http://hacking.orz.hm/app/chirimen-kaleidoscope/test2.php" method="post")
-      textarea(id="txtarea" rows="5" style="width:100%" name="base64_img")
-      p
-        input(type="submit" value="tweet")
+    style.
+      body {
+      padding-top: 0.3em;
+      /*padding-left: 1.8em;
+      font-size: 300px;*/
+      }
+      #led {
+      color: red;
+      }
+      #servo {
+      transform: rotate(0deg); /* 0 to 180 */
+      display: inline-block;
+      }
+      #slider {
+      width: 500px;
+      position: absolute;
+      top: 100px;
+      left: 650px;
+      }
+      #wrapper {
+      overflow: hidden;
+      }
+      #imgCol {
+      float: left;
+      width: 60%;
+      padding-right: 5%;
+      box-sizing: border-box;
+      -moz-box-sizing: border-box;
+      }
+      #imgCol img {
+      width: 100%;
+      }
+      #imgCol iframe {
+      width: 100%;
+      height: 100%;
+      min-height: 500px;
+      border: none;
+      }
+      #controlCol {
+      float: left;
+      width: 40%;
+      }
+      #controlCol > *:first-child {
+      margin-top: 0;
+      }
+      .panel {
+      margin-top: 2.5em;
+      }
+      .panel-ttl {
+      margin-top: 0;
+      font-size: 2em;
+      font-weight: bold;
+      }
+      .box-btn {
+      overflow: hidden;
+      margin-top: 1em;
+      margin-left: -2em;
+      }
+      .box-btn > .btn-col {
+      float: left;
+      width: 50%;
+      padding-left: 2em;
+      box-sizing: border-box;
+      -moz-box-sizing: border-box;
+      }
+      .btn {
+      border: 1px solid #cecece;
+      text-align: center;
+      }
+      .btn a {
+      display: block;
+      width: 100%;
+      padding: 1em 2em;
+      color: #0054bc;
+      text-decoration: none;
+      box-sizing: border-box;
+      -moz-box-sizing: border-box;
+      }
+  body
+    #wrapper
+      #imgCol
+        // <img src="http://placehold.jp/600x600.png">
+        iframe#if_img(src='http://192.168.2.31:8080/jsfs.html')
+      // / imgCol
+      #controlCol
+        .panel
+          p.panel-ttl 回転
+          .box-btn
+            .btn-col
+              #btn-rotateR.btn 右回転
+            .btn-col
+              #btn-rotateL.btn 左回転
+          .box-btn
+            .btn-col
+              #btn-rotateAuto.btn Auto
+        // / panel
+        .panel
+          p.panel-ttl LED
+          .box-btn
+            .btn-col
+              #btn-ledRandom.btn ランダム
+            //
+              <div class="btn-col">
+              <div class="btn" id="#btn-ledPicker">
+              <a href="">カラーピッカー</a>
+              <input type="color" name="color" id="color">
+              </div>
+              </div>
+        // / panel
+      // / controlCol
+    // / wrapper
+
+    p
+      img(id="img1" src="icon.png")
+    p
+      button(onclick="img2canvas();") img2canvas
+    p
+      canvas#c1
+    p
+      button(onclick="canvas2img();") img2canvas
+      button(onclick="canvas2base64();") img2canvas
+    p
+      img(id="img2" src="icon.png")
+    p
+      form(action="http://hacking.orz.hm/app/chirimen-kaleidoscope/test2.php" method="post")
+        textarea(id="txtarea" rows="5" style="width:100%" name="base64_img")
+        p
+          input(type="submit" value="tweet")
+
+    #led(data-css-device='type:multi-color-led; port-type:i2c; port-number:0; address:0x40; pwm-pin:0,1,2; min-pulse:0; max-pulse:0.006;') LED
+    #servo(data-css-device='type:servo; port-type:i2c; port-number:0; address:0x40; pwm-pin:3; min-pulse:0.0005; max-pulse:0.0024; angle-range:180;')
+      | SERVO
+      br
+      span#angl
+  script(src='jquery-1.11.3.min.js')
+  script(src='wot.js')
+  script(src='wot2.js')
