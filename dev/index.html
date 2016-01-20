@@ -1,6 +1,7 @@
 <!DOCTYPE html>
-<html>
+<html lang="ja">
   <head>
+    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1">
     <title>WoT Beginners Toolkit</title>
     <script src="css-devices/devices/i2c.js" defer></script>
@@ -16,8 +17,8 @@
     <style>
       body {
         padding-top: 0.3em;
-        padding-left: 1.8em;
-        font-size: 300px;
+        /*padding-left: 1.8em;
+        font-size: 300px;*/
       }
       #led {
         color: red;
@@ -32,37 +33,235 @@
         top: 100px;
         left: 650px;
       }
+
+      #wrapper {
+        overflow: hidden;
+      }
+
+      #imgCol {
+        float: left;
+        width: 60%;
+        padding-right: 5%;
+        box-sizing: border-box;
+        -moz-box-sizing: border-box;
+      }
+      #imgCol img {
+        width: 100%;
+      }
+
+      #imgCol iframe {
+        width: 100%;
+        height: 100%;
+        min-height: 500px;
+        border: none;
+      }
+      #controlCol {
+        float: left;
+        width: 40%;
+      }
+      #controlCol > *:first-child {
+        margin-top: 0;
+      }
+      .panel {
+        margin-top: 2.5em;
+      }
+      .panel-ttl {
+        margin-top: 0;
+        font-size: 2em;
+        font-weight: bold;
+      }
+      .box-btn {
+        overflow: hidden;
+        margin-top: 1em;
+        margin-left: -2em;
+      }
+      .box-btn > .btn-col {
+        float: left;
+        width: 50%;
+        padding-left: 2em;
+        box-sizing: border-box;
+        -moz-box-sizing: border-box;
+      }
+      .btn {
+        border: 1px solid #cecece;
+        text-align: center;
+      }
+      .btn a {
+        display: block;
+        width: 100%;
+        padding: 1em 2em;
+        color: #0054bc;
+        text-decoration: none;
+        box-sizing: border-box;
+        -moz-box-sizing: border-box;
+      }
+
     </style>
   </head>
   <body>
-    <!--
-    <input id="slider" type="range" min="0" max="180">
-    -->
    
+    <div id="wrapper">
+      <div id="imgCol">
+        <!-- <img src="http://placehold.jp/600x600.png"> -->
+        <iframe src="http://192.168.1.7:8080/jsfs.html"></iframe>
+      </div><!-- / imgCol -->
+
+      <div id="controlCol">
+        <div class="panel">
+          <p class="panel-ttl">回転</p>
+
+          <div class="box-btn">
+            <div class="btn-col">
+              <div class="btn" id="btn-rotateR">
+                <a href="">右回転</a>
+              </div>
+            </div>
+            <div class="btn-col">
+              <div class="btn" id="btn-rotateL">
+                <a href="">左回転</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="box-btn">
+            <div class="btn-col">
+              <div class="btn" id="btn-rotateAuto">
+                <a href="">Auto</a>
+              </div>
+            </div>
+          </div>
+
+        </div><!-- / panel -->
+
+        <div class="panel">
+          <p class="panel-ttl">LED</p>
+
+          <div class="box-btn">
+            <div class="btn-col">
+              <div class="btn" id="btn-ledRandom">
+                <a href="">ランダム</a>
+              </div>
+            </div>
+            <!-- <div class="btn-col">
+              <div class="btn" id="#btn-ledPicker">
+                <a href="">カラーピッカー</a>
+                <input type="color" name="color" id="color">
+              </div>
+              </div> -->
+          </div>
+
+        </div><!-- / panel -->
+      </div><!-- / controlCol -->
+    </div><!-- / wrapper -->
+
     <div id="led" data-css-device="type:multi-color-led; port-type:i2c; port-number:0; address:0x40; pwm-pin:0,1,2; min-pulse:0; max-pulse:0.006;">LED</div>
     <div id="servo" data-css-device="type:servo; port-type:i2c; port-number:0; address:0x40; pwm-pin:3; min-pulse:0.0005; max-pulse:0.0024; angle-range:180;">SERVO<BR><span id="angl"></span></div>
     
-      <!--ADC: <input id="adc" data-css-device="type:adc; port-type:i2c; port-number:0; address:0x68;"></input>
---> 
-
-     <script src="jquery-1.11.3.min.js"></script>
+   <script src="jquery-1.11.3.min.js"></script>
     <script>
-      //var servo = document.getElementById('servo');
       var servo = $('#servo');
       var num = 0;
       var direction = 'up';
-      setInterval(function(){
-        if(direction == 'up'){
-          num+=180;
-        } else {
-          num-=180;
-        }
-        if(num > 180) {
-          direction == 'down';
-        }
-        servo.css('transform', 'rotate('+ num +'deg)');
-      }, 1000);
-      
+
+var timerId = '';
+function ledRandom() {
+  var i=0;
+  $txt=$('#led');
+  $txt.html('colors');
+  $txt.css('color','hsl(209, 50%, 50%)');
+
+  function loop(i){
+     if(i >360){
+       i=0;
+     }
+    var color = "hsl("+ i +", 50%, 50%)";
+    $txt.html(color);
+    $txt.css('color', color);
+    // i++;
+    i += 4;
+  
+    timerId = setTimeout(loop,20, i);
+  }
+  loop(i);
+}
+
+function clearTimer() {
+  clearTimeout(timerId);
+}
+
+$('#color').on('change', function(){
+  console.log($(this).val());
+});
+
+$('#btn-ledRandom').on('click', function(){
+  ledRandom();
+  return false;
+});
+
+$('#btn-ledPicker').on('click', function(){
+  clearTimer();
+  return false;
+});
+
+$('#btn-rotateR').on('click', function(){
+  rotateRight();
+  return false;
+});
+$('#btn-rotateL').on('click', function(){
+  rotateLeft();
+  return false;
+});
+
+$('#btn-rotateAuto').on('click', function(){
+  rotateAuto();
+  return false;
+});
+
+var intarval = '';
+function rotateRight() {
+  clearAuto();
+  if(num > 180) {
+    return;
+  }
+  num++;
+  rotateServo(num);
+}
+
+function rotateLeft() {
+  clearAuto();
+
+  if(num < 0) {
+    return;
+  }
+  num--;
+  rotateServo(num);
+}
+
+function rotateAuto() {
+  intarval = setInterval(function(){
+    if(direction == 'up'){
+      num = 180;
+    } else {
+      num = 0;
+    }
+    if(num >= 180) {
+      direction = 'down';
+    } else {
+      direction = 'up';
+    }
+    rotateServo(num);
+  }, 1000);
+}
+
+function clearAuto() {
+  clearInterval(intarval);
+}
+
+function rotateServo(num) {
+  servo.css('transform', 'rotate('+ num +'deg)');
+}
+
+
     </script>
  
 </body>
